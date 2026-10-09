@@ -1,0 +1,6 @@
+ID,name,description,sku,createdAt,createdBy,modifiedAt,modifiedBy
+b0000001-0000-4000-8000-000000000001,Laptop Pro,High-performance laptop for professionals,LP-001,2024-01-15T10:00:00Z,admin,2024-01-15T10:00:00Z,admin
+b0000001-0000-4000-8000-000000000002,Wireless Mouse,Ergonomic wireless mouse with 2.4GHz connection,WM-001,2024-01-16T10:00:00Z,admin,2024-01-16T10:00:00Z,admin
+b0000001-0000-4000-8000-000000000003,USB-C Hub,7-in-1 USB-C hub with multiple ports,HUB-001,2024-01-17T10:00:00Z,admin,2024-01-17T10:00:00Z,admin
+b0000001-0000-4000-8000-000000000004,Monitor 4K,27-inch 4K Ultra HD display monitor,MON-001,2024-01-18T10:00:00Z,admin,2024-01-18T10:00:00Z,admin
+b0000001-0000-4000-8000-000000000005,Mechanical Keyboard,RGB mechanical keyboard with custom switches,KB-001,2024-01-19T10:00:00Z,admin,2024-01-19T10:00:00Z,admin

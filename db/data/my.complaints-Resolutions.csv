@@ -1,0 +1,4 @@
+ID,complaint_ID,description,actionTaken,agentName,createdAt,createdBy,modifiedAt,modifiedBy
+d0000001-0000-4000-8000-000000000001,a0000001-0000-4000-8000-000000000005,Replaced all faulty keys,Hardware replacement,John Cooper,2024-02-08T14:00:00Z,admin,2024-02-08T16:45:00Z,admin
+d0000001-0000-4000-8000-000000000002,a0000001-0000-4000-8000-000000000002,Battery replacement under warranty,Hardware replacement,Maria Garcia,2024-02-06T10:00:00Z,admin,2024-02-06T09:30:00Z,admin
+d0000001-0000-4000-8000-000000000003,a0000001-0000-4000-8000-000000000003,Tested buttons - issue resolved after firmware update,Software update,David Lee,2024-02-05T11:00:00Z,admin,2024-02-05T13:20:00Z,admin

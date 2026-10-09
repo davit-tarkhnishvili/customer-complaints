@@ -1,0 +1,165 @@
+_schema-version: 3.3.0
+ID: customer_complaints
+version: 1.0.0
+description: "A simple CAP project."
+parameters:
+  enable-parallel-deployments: true
+  deploy_mode: html5-repo
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+modules:
+  - name: customer_complaints-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      instances: 1
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: customer_complaints-auth
+      - name: customer_complaints-db
+      - name: customer_complaints-destination
+
+  - name: customer_complaints-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: customer_complaints-db
+
+  - name: customer_complaints-app-deployer
+    type: com.sap.application.content
+    path: gen
+    build-parameters:
+      build-result: app/
+      requires:
+        - name: customer_complaintscustomer_complaints
+          artifacts:
+            - customer_complaints.zip
+          target-path: app/
+    requires:
+      - name: customer_complaints-auth
+      - name: srv-api
+      - name: customer_complaints-html5-repo-host
+        parameters:
+          content-target: true
+          config:
+            HTML5Runtime_enabled: true
+    parameters:
+      config:
+        destinations:
+          - Name: srv-api
+            URL: ~{srv-api/srv-url}
+            Authentication: NoAuthentication
+            Type: HTTP
+            ProxyType: Internet
+            ForwardAuthToken: true
+            DynamicDestination: true
+
+  - name: customer_complaintscustomer_complaints
+    type: html5
+    path: app/customer_complaints
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+
+  - name: customer_complaints-destinations
+    type: com.sap.application.content
+    requires:
+      - name: customer_complaints-auth
+        parameters:
+          service-key:
+            name: customer_complaints-auth-key
+      - name: customer_complaints-html5-repo-host
+        parameters:
+          service-key:
+            name: customer_complaints-html5-repo-host-key
+      - name: srv-api
+      - name: customer_complaints-destination
+        parameters:
+          content-target: true
+    build-parameters:
+      no-source: true
+    parameters:
+      content:
+        subaccount:
+          existing_destinations_policy: update
+          destinations:
+            - Name: customer_complaints-html5-repository
+              ServiceInstanceName: customer_complaints-html5-repo-host
+              ServiceKeyName: customer_complaints-html5-repo-host-key
+              sap.cloud.service: customer_complaints.service
+            - Name: customer_complaints-auth
+              Authentication: OAuth2UserTokenExchange
+              ServiceInstanceName: customer_complaints-auth
+              ServiceKeyName: customer_complaints-auth-key
+              sap.cloud.service: customer_complaints.service
+        instance:
+          existing_destinations_policy: update
+          destinations:
+            - Name: customer_complaints-html5-repository
+              ServiceInstanceName: customer_complaints-html5-repo-host
+              ServiceKeyName: customer_complaints-html5-repo-host-key
+              sap.cloud.service: customer_complaints.service
+            - Name: customer_complaints-auth
+              Authentication: OAuth2UserTokenExchange
+              ServiceInstanceName: customer_complaints-auth
+              ServiceKeyName: customer_complaints-auth-key
+              sap.cloud.service: customer_complaints.service
+
+resources:
+  - name: customer_complaints-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: customer_complaints-${org}-${space}
+        tenant-mode: dedicated
+        oauth2-configuration:
+          credential-types:
+            - "binding-secret"
+            - "x509"
+        role-collections:
+          - name: 'viewer (customer_complaints ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.viewer'
+          - name: 'admin (customer_complaints ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.admin'
+  - name: customer_complaints-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: customer_complaints-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+    requires:
+      - name: srv-api
+
+  - name: customer_complaints-html5-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host

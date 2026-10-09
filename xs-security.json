@@ -1,0 +1,41 @@
+{
+  "xsappname": "customer_complaints",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.viewer",
+      "description": "viewer"
+    },
+    {
+      "name": "$XSAPPNAME.admin",
+      "description": "admin"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "viewer",
+      "description": "generated",
+      "scope-references": ["$XSAPPNAME.viewer"],
+      "attribute-references": []
+    },
+    {
+      "name": "admin",
+      "description": "generated",
+      "scope-references": ["$XSAPPNAME.admin"],
+      "attribute-references": []
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "customer_complaints_viewer",
+      "description": "Read-only access",
+      "role-template-references": ["$XSAPPNAME.viewer"]
+    },
+    {
+      "name": "customer_complaints_admin",
+      "description": "Full access",
+      "role-template-references": ["$XSAPPNAME.admin"]
+    }
+  ]
+}

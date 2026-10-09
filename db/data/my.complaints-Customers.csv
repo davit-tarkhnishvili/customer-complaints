@@ -1,0 +1,6 @@
+ID,name,email,phone,createdAt,createdBy,modifiedAt,modifiedBy
+c0000001-0000-4000-8000-000000000001,John Smith,john.smith@example.com,+1-555-0101,2024-01-10T08:00:00Z,admin,2024-01-10T08:00:00Z,admin
+c0000001-0000-4000-8000-000000000002,Sarah Johnson,sarah.johnson@example.com,+1-555-0102,2024-01-11T09:00:00Z,admin,2024-01-11T09:00:00Z,admin
+c0000001-0000-4000-8000-000000000003,Michael Chen,michael.chen@example.com,+1-555-0103,2024-01-12T10:00:00Z,admin,2024-01-12T10:00:00Z,admin
+c0000001-0000-4000-8000-000000000004,Emily Davis,emily.davis@example.com,+1-555-0104,2024-01-13T11:00:00Z,admin,2024-01-13T11:00:00Z,admin
+c0000001-0000-4000-8000-000000000005,Robert Wilson,robert.wilson@example.com,+1-555-0105,2024-01-14T12:00:00Z,admin,2024-01-14T12:00:00Z,admin
